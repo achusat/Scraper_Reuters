@@ -10,7 +10,6 @@ connection.close()
 page_soup = bs4.BeautifulSoup(page_html, "html.parser")
 modules = page_soup.findAll("div",{"class":"module"})
 check = ["Consensus Estimates Analysis","Valuation Ratios","Growth Rates","Financial Strength","Profitability Ratios"]
-#dataTables = page_soup.findAll("table",{"class":"dataTable"})
 headers = []
 data = []
 aData = ['']
@@ -24,12 +23,8 @@ for m in modules:
 		continue
 	else:
 		temp = str(name.text.strip())
-		#check = "Dividends"
-		#if temp == check:
-		#	print("Found")
 		for c in check:
 			if temp == c:
-				#print("Found")
 				print(temp)
 				dataTables = m.find("table",{"class":"dataTable"})
 				if dataTables is None:
@@ -43,7 +38,6 @@ for m in modules:
 					anomData = dataTables.findAll("td",{"class":"dataTitle"})
 					for a in anomData:
 						aData.append(a.text)
-						#print(a.text)
 					for d in rawData:
 						data.append(d.text.strip())
 					worksheet = workbook.add_worksheet(temp)
@@ -79,18 +73,3 @@ for m in modules:
 					row = 0
 					col = 0
 workbook.close()
-		#print(temp)
-#headers = []
-#data = []
-#no_tables = len(dataTables)
-#print(no_tables)
-#for no in dataTables:
-#	head = no.findAll("th")
-#	for h in head:
-#		headers.append(h.text)
-#	rawData = no.findAll("td")
-#	for d in rawData:
-#		data.append(d.text)
-#	print(headers)
-#	headers = []
-#	data = []
