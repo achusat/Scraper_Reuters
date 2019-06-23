@@ -1,14 +1,18 @@
 import bs4
 import xlsxwriter
 from urllib.request import urlopen as uReq
+#url of the website being scraped
 my_url = 'https://in.reuters.com/finance/stocks/financial-highlights/'
 key = input("Enter the key value: \n")
+#accepting user input for the key value
 my_url = my_url + key
+#opening connection to the desired url
 connection = uReq(my_url)
 page_html = uReq(my_url).read()
 connection.close()
 page_soup = bs4.BeautifulSoup(page_html, "html.parser")
 modules = page_soup.findAll("div",{"class":"module"})
+#only specific data tables required
 check = ["Consensus Estimates Analysis","Valuation Ratios","Growth Rates","Financial Strength","Profitability Ratios"]
 headers = []
 data = []
@@ -16,6 +20,7 @@ aData = ['']
 row = 0
 col = 0
 loop = 0
+#to store the data being scraped into an excel file
 workbook = xlsxwriter.Workbook('DataFound.xlsx')
 for m in modules:
 	name = m.find("div",{"class":"moduleHeader"})
@@ -40,7 +45,9 @@ for m in modules:
 						aData.append(a.text)
 					for d in rawData:
 						data.append(d.text.strip())
+					#putting each table in a new sheet
 					worksheet = workbook.add_worksheet(temp)
+					#recreating the table scraped
 					for h in headers:
 						worksheet.write(row,col,h)
 						col = col + 1
